@@ -37,7 +37,6 @@
     <Folder Include="Features\Auth\" />
     <Folder Include="Features\Workouts\" />
     <Folder Include="Features\Users\" />
-    <Folder Include="Models\Entities\" />
     <Folder Include="Models\Enums\" />
     <Folder Include="Services\" />
   </ItemGroup>
