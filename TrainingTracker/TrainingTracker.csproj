@@ -30,11 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Behaviors\" />
-    <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Mappings\" />
     <Folder Include="Common\Responses\" />
-    <Folder Include="Features\Auth\" />
     <Folder Include="Features\Workouts\" />
     <Folder Include="Features\Users\" />
     <Folder Include="Models\Enums\" />
