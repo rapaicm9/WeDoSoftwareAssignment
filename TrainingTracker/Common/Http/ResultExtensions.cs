@@ -33,16 +33,20 @@ namespace TrainingTracker.Common.Http
                 ErrorType.Conflict => StatusCodes.Status409Conflict,
                 ErrorType.NotFound => StatusCodes.Status404NotFound,
                 ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+                ErrorType.Inactive => StatusCodes.Status403Forbidden,
+                ErrorType.Failure => StatusCodes.Status500InternalServerError,
                 _ => StatusCodes.Status500InternalServerError
             };
 
             var title = error.Type switch
             {
-                ErrorType.Validation => "Validation failed",
+                ErrorType.Validation => "Validation Failed",
                 ErrorType.Conflict => "Conflict",
-                ErrorType.NotFound => "Not found",
+                ErrorType.NotFound => "Not Found",
                 ErrorType.Unauthorized => "Unauthorized",
-                _ => "Request failed"
+                ErrorType.Inactive => "Forbidden",
+                ErrorType.Failure => "Request Failed",
+                _ => "Request Failed"
             };
 
             var problemDetails = new ProblemDetails
@@ -62,6 +66,7 @@ namespace TrainingTracker.Common.Http
                 StatusCodes.Status409Conflict => controller.Conflict(problemDetails),
                 StatusCodes.Status404NotFound => controller.NotFound(problemDetails),
                 StatusCodes.Status401Unauthorized => controller.Unauthorized(problemDetails),
+                StatusCodes.Status403Forbidden => controller.StatusCode(StatusCodes.Status403Forbidden, problemDetails),
                 _ => controller.StatusCode(statusCode, problemDetails)
             };
         }
