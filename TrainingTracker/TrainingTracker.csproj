@@ -32,7 +32,6 @@
   <ItemGroup>
     <Folder Include="Common\Mappings\" />
     <Folder Include="Common\Responses\" />
-    <Folder Include="Features\Workouts\" />
     <Folder Include="Features\Users\" />
     <Folder Include="Services\" />
   </ItemGroup>
