@@ -11,5 +11,6 @@
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAtUtc { get; set; }
+        public ICollection<Workout> Workouts { get; set; } = new List<Workout>();
     }
 }

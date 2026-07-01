@@ -34,7 +34,6 @@
     <Folder Include="Common\Responses\" />
     <Folder Include="Features\Workouts\" />
     <Folder Include="Features\Users\" />
-    <Folder Include="Models\Enums\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
