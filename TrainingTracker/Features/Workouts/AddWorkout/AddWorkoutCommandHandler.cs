@@ -43,7 +43,7 @@ namespace TrainingTracker.Features.Workouts.AddWorkout
                 {
                     _logger.LogWarning("Workout creation failed. User ID {UserId} was not found", request.UserId);
 
-                    return AuthenticatedUserNotFoundResult();
+                    return UserNotFoundResult();
                 }
 
                 if (!user.IsActive)
@@ -86,7 +86,7 @@ namespace TrainingTracker.Features.Workouts.AddWorkout
 
         }
 
-        private static Result<AddWorkoutResponse> AuthenticatedUserNotFoundResult()
+        private static Result<AddWorkoutResponse> UserNotFoundResult()
         {
             return Result<AddWorkoutResponse>.Failure(new Error(
                 Code: "Auth.AuthenticatedUserNotFound",
