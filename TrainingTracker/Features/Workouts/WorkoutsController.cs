@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrainingTracker.Common.Http;
 using TrainingTracker.Features.Workouts.AddWorkout;
+using TrainingTracker.Features.Workouts.GetMonthlyProgress;
 
 namespace TrainingTracker.Features.Workouts
 {
@@ -57,6 +58,42 @@ namespace TrainingTracker.Features.Workouts
             return result.ToActionResult(
                 controller: this,
                 successStatusCode: StatusCodes.Status201Created);
+        }
+
+        [HttpGet("progress/monthly")]
+        [ProducesResponseType(typeof(GetMonthlyProgressResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<GetMonthlyProgressResponse>> GetMonthlyProgress(
+            [FromQuery] int year,
+            [FromQuery] int month,
+            CancellationToken cancellationToken)
+        {
+            if (!TryGetAuthenticatedUserId(out var userId))
+                return Unauthorized();
+
+            var query = new GetMonthlyProgressQuery(
+                UserId: userId,
+                Year: year,
+                Month: month);
+
+            var result = await _sender.Send(query, cancellationToken);
+
+            if (result.IsSuccess)
+                return Ok(result.Value);
+
+            return result.ToActionResult(
+                controller: this,
+                successStatusCode: StatusCodes.Status200OK);
+        }
+
+        private bool TryGetAuthenticatedUserId(out Guid userId)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return Guid.TryParse(userIdClaim, out userId);
         }
     }
 }
