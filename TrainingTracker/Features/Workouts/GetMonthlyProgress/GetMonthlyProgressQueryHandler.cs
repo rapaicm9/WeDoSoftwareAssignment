@@ -1,11 +1,12 @@
-﻿using MediatR;
+﻿using TrainingTracker.Common.CQRS;
 using Microsoft.EntityFrameworkCore;
 using TrainingTracker.Api.Database;
 using TrainingTracker.Common.Results;
 
 namespace TrainingTracker.Features.Workouts.GetMonthlyProgress
 {
-    public sealed class GetMonthlyProgressQueryHandler : IRequestHandler<GetMonthlyProgressQuery, Result<GetMonthlyProgressResponse>>
+    public sealed class GetMonthlyProgressQueryHandler
+        : IQueryHandler<GetMonthlyProgressQuery, GetMonthlyProgressResponse>
     {
         private readonly AppDbContext _dbContext;
         private readonly ILogger<GetMonthlyProgressQueryHandler> _logger;

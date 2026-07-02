@@ -1,11 +1,9 @@
-﻿using MediatR;
-using TrainingTracker.Common.Results;
-
+﻿using TrainingTracker.Common.CQRS;
 
 namespace TrainingTracker.Features.Workouts.GetMonthlyProgress
 {
     public sealed record GetMonthlyProgressQuery(
         Guid UserId,
         int Year,
-        int Month) : IRequest<Result<GetMonthlyProgressResponse>>;
+        int Month) : IQuery<GetMonthlyProgressResponse>;
 }

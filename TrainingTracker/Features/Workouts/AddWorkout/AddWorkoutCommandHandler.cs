@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MediatR;
+using TrainingTracker.Common.CQRS;
 using Microsoft.EntityFrameworkCore;
 using TrainingTracker.Api.Database;
 using TrainingTracker.Common.Results;
@@ -7,7 +7,8 @@ using TrainingTracker.Models.Entities;
 
 namespace TrainingTracker.Features.Workouts.AddWorkout
 {
-    public sealed class AddWorkoutCommandHandler : IRequestHandler<AddWorkoutCommand, Result<AddWorkoutResponse>>
+    public sealed class AddWorkoutCommandHandler
+        : ICommandHandler<AddWorkoutCommand, AddWorkoutResponse>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;

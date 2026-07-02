@@ -1,5 +1,4 @@
-﻿using MediatR;
-using TrainingTracker.Common.Results;
+﻿using TrainingTracker.Common.CQRS;
 using TrainingTracker.Models.Enums;
 
 namespace TrainingTracker.Features.Workouts.AddWorkout
@@ -13,5 +12,5 @@ namespace TrainingTracker.Features.Workouts.AddWorkout
         int TrainingIntensity,
         int Fatigue,
         string? Notes,
-        DateTime TrainingDateTimeUtc) : IRequest<Result<AddWorkoutResponse>>;
+        DateTime TrainingDateTimeUtc) : ICommand<AddWorkoutResponse>;
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MediatR;
+using TrainingTracker.Common.CQRS;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -11,7 +11,7 @@ using TrainingTracker.Models.Entities;
 namespace TrainingTracker.Features.Auth.Register;
 
 public sealed class RegisterCommandHandler
-    : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
+    : ICommandHandler<RegisterCommand, RegisterResponse>
 {
     private readonly AppDbContext _dbContext;
     private readonly IPasswordHasher<User> _passwordHasher;

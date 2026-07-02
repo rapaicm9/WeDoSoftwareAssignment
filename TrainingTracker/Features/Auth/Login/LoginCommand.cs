@@ -1,9 +1,8 @@
-﻿using MediatR;
-using TrainingTracker.Common.Results;
+﻿using TrainingTracker.Common.CQRS;
 
 namespace TrainingTracker.Features.Auth.Login
 {
     public sealed record LoginCommand(
         string Email,
-        string Password) : IRequest<Result<LoginResponse>>;
+        string Password) : ICommand<LoginResponse>;
 }

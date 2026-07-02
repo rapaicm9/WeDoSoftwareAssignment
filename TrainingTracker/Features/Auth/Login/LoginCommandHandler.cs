@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using TrainingTracker.Common.CQRS;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -8,7 +8,8 @@ using TrainingTracker.Models.Entities;
 
 namespace TrainingTracker.Features.Auth.Login
 {
-    public sealed class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
+    public sealed class LoginCommandHandler 
+        : ICommandHandler<LoginCommand, LoginResponse>
     {
         private readonly AppDbContext _dbContext;
         private readonly IPasswordHasher<User> _passwordHasher;

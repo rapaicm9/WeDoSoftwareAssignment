@@ -1,5 +1,4 @@
-﻿using MediatR;
-using TrainingTracker.Common.Results;
+﻿using TrainingTracker.Common.CQRS;
 
 namespace TrainingTracker.Features.Auth.Register
 {
@@ -8,5 +7,5 @@ namespace TrainingTracker.Features.Auth.Register
         string Password,
         string FirstName,
         string LastName
-    ) : IRequest<Result<RegisterResponse>>;
+    ) : ICommand<RegisterResponse>;
 }
