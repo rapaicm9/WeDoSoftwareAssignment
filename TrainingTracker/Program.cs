@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using TrainingTracker.Features.Auth;
 using System.Text.Json.Serialization;
 
+const string angularFrontendCorsPolicy = "AngularFrontendCorsPolicy";
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,6 +86,17 @@ if (jwtOptions.Secret.Length < 32)
 
 builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(angularFrontendCorsPolicy, policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -119,6 +132,8 @@ app.MapScalarApiReference();
 
 
 app.UseHttpsRedirection();
+
+app.UseCors(angularFrontendCorsPolicy);
 
 app.UseAuthentication();
 

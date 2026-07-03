@@ -1,0 +1,64 @@
+<main class="dashboard-page">
+  <section class="dashboard-header">
+    <div>
+      <p class="eyebrow">TrainingTracker</p>
+
+      @if (currentUser(); as user) {
+        <h1>Welcome, {{ user.fullName }}</h1>
+        <p class="subtitle">{{ user.email }}</p>
+      } @else {
+        <h1>Welcome</h1>
+        <p class="subtitle">Authenticated dashboard</p>
+      }
+    </div>
+
+    <button mat-flat-button color="primary" type="button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </section>
+
+  <section class="dashboard-grid">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>fitness_center</mat-icon>
+        <mat-card-title>Workouts</mat-card-title>
+        <mat-card-subtitle>Workout management placeholder</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>
+          Section for workouts (adding, updating ,deleting)
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>monitoring</mat-icon>
+        <mat-card-title>Monthly Progress</mat-card-title>
+        <mat-card-subtitle>Progress tracking placeholder</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>
+          Section for progress reports
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>person</mat-icon>
+        <mat-card-title>Profile</mat-card-title>
+        <mat-card-subtitle>User profile placeholder</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>
+          Section for profile details
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</main>
