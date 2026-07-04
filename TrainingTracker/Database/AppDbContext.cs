@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrainingTracker.Models.Entities;
 
-namespace TrainingTracker.Api.Database;
+namespace TrainingTracker.Database;
 
 public sealed class AppDbContext : DbContext
 {

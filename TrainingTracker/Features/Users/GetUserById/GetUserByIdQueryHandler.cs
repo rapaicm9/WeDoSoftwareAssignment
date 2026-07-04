@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TrainingTracker.Api.Database;
+using TrainingTracker.Database;
 using TrainingTracker.Common.CQRS;
 using TrainingTracker.Common.Results;
 

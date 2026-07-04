@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TrainingTracker.Common.CQRS;
-using TrainingTracker.Api.Database;
+using TrainingTracker.Database;
 using TrainingTracker.Common.Results;
 using TrainingTracker.Models.Entities;
 

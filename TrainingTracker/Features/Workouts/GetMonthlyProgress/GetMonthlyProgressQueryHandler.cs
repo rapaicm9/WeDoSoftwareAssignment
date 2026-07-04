@@ -1,6 +1,6 @@
 ﻿using TrainingTracker.Common.CQRS;
 using Microsoft.EntityFrameworkCore;
-using TrainingTracker.Api.Database;
+using TrainingTracker.Database;
 using TrainingTracker.Common.Results;
 
 namespace TrainingTracker.Features.Workouts.GetMonthlyProgress

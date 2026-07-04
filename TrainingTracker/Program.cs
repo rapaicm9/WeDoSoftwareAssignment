@@ -1,4 +1,4 @@
-using TrainingTracker.Api.Database;
+using TrainingTracker.Database;
 using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using TrainingTracker.Models.Entities;

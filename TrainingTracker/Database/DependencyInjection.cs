@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace TrainingTracker.Api.Database;
+namespace TrainingTracker.Database;
 
 public static class DependencyInjection
 {

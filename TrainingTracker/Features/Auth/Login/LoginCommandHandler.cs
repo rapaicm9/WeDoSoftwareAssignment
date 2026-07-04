@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using TrainingTracker.Api.Database;
+using TrainingTracker.Database;
 using TrainingTracker.Common.Results;
 using TrainingTracker.Models.Entities;
 

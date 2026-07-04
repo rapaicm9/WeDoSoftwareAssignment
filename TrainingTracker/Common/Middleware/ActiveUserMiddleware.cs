@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TrainingTracker.Api.Database;
+using TrainingTracker.Database;
 
 namespace TrainingTracker.Common.Middleware
 {

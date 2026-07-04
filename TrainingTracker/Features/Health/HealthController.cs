@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TrainingTracker.Api.Database;
+using TrainingTracker.Database;
 
-namespace TrainingTracker.Api.Features.Health;
+namespace TrainingTracker.Features.Health;
 
 [ApiController]
 [Route("api/health")]
