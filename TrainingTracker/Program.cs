@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using TrainingTracker.Features.Auth;
 using System.Text.Json.Serialization;
+using TrainingTracker.Common.Middleware;
 
 const string angularFrontendCorsPolicy = "AngularFrontendCorsPolicy";
 
@@ -136,6 +137,8 @@ app.UseHttpsRedirection();
 app.UseCors(angularFrontendCorsPolicy);
 
 app.UseAuthentication();
+
+app.UseMiddleware<ActiveUserMiddleware>();
 
 app.UseAuthorization();
 
