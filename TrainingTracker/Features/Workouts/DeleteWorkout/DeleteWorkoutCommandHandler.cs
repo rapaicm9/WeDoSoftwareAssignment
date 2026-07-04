@@ -25,34 +25,6 @@ namespace TrainingTracker.Features.Workouts.DeleteWorkout
         {
             try
             {
-                var user = await _dbContext.Users
-                    .AsNoTracking()
-                    .Where(user => user.Id == request.UserId)
-                    .Select(user => new
-                    {
-                        user.Id,
-                        user.IsActive
-                    })
-                    .FirstOrDefaultAsync(cancellationToken);
-
-                if (user is null)
-                {
-                    _logger.LogWarning(
-                        "Workout deletion failed. User ID {UserId} was not found.",
-                        request.UserId);
-
-                    return UserNotFoundResult();
-                }
-
-                if (!user.IsActive)
-                {
-                    _logger.LogWarning(
-                        "Workout deletion failed. User ID {UserId} is inactive.",
-                        request.UserId);
-
-                    return UserInactiveResult();
-                }
-
                 var workout = await _dbContext.Workouts
                     .Where(workout =>
                         workout.Id == request.WorkoutId &&
@@ -86,23 +58,6 @@ namespace TrainingTracker.Features.Workouts.DeleteWorkout
                 throw;
             }
         }
-
-        private static Result<DeleteWorkoutResponse> UserNotFoundResult()
-        {
-            return Result<DeleteWorkoutResponse>.Failure(new Error(
-                Code: "Auth.AuthenticatedUserNotFound",
-                Message: "Authenticated user could not be found.",
-                Type: ErrorType.Unauthorized));
-        }
-
-        private static Result<DeleteWorkoutResponse> UserInactiveResult()
-        {
-            return Result<DeleteWorkoutResponse>.Failure(new Error(
-                Code: "Users.UserInactive",
-                Message: "User is inactive.",
-                Type: ErrorType.Inactive));
-        }
-
         private static Result<DeleteWorkoutResponse> WorkoutNotFoundResult()
         {
             return Result<DeleteWorkoutResponse>.Failure(new Error(

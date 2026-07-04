@@ -29,30 +29,6 @@ namespace TrainingTracker.Features.Workouts.GetMonthlyProgress
                 if (request.Month is < 1 or > 12)
                     return InvalidMonthResult();
 
-                var user = await _dbContext.Users
-                    .AsNoTracking()
-                    .Where(user => user.Id == request.UserId)
-                    .Select(user => new
-                    {
-                        user.Id,
-                        user.IsActive
-                    })
-                    .FirstOrDefaultAsync(cancellationToken);
-
-                if (user is null)
-                {
-                    _logger.LogWarning("Monthly progress retrieval failed. User ID {UserId} was not found.", request.UserId);
-
-                    return UserNotFoundResult();
-                }
-
-                if (!user.IsActive)
-                {
-                    _logger.LogWarning("Monthly progress retrieval failed. User ID {UserId} is inactive.", request.UserId);
-
-                    return UserInactiveResult();
-                }
-
                 var monthStartUtc = new DateTime(
                     request.Year,
                     request.Month,
@@ -198,22 +174,6 @@ namespace TrainingTracker.Features.Workouts.GetMonthlyProgress
                 Code: "Progress.InvalidMonth",
                 Message: "Month must be between 1 and 12",
                 Type: ErrorType.Validation));
-        }
-
-        private static Result<GetMonthlyProgressResponse> UserNotFoundResult()
-        {
-            return Result<GetMonthlyProgressResponse>.Failure(new Error(
-                Code: "Auth.UserNotFound",
-                Message: "User could not be found",
-                Type: ErrorType.Unauthorized));
-        }
-
-        private static Result<GetMonthlyProgressResponse> UserInactiveResult()
-        {
-            return Result<GetMonthlyProgressResponse>.Failure(new Error(
-                Code: "Users.UserInactive",
-                Message: "User is inactive",
-                Type: ErrorType.Inactive));
         }
     }
 }
