@@ -80,7 +80,7 @@ public sealed class AppDbContext : DbContext
 
             entity.Property(workout => workout.Title)
                 .IsRequired()
-                .HasMaxLength(150);
+                .HasMaxLength(200);
 
             entity.Property(workout => workout.Type)
                 .IsRequired()
