@@ -1,0 +1,64 @@
+<section class="dashboard-home">
+  <div class="dashboard-hero">
+    <p class="eyebrow">Dashboard</p>
+    <h2>Welcome back</h2>
+    <p>
+      Use this page as your central overview. Once the workout and progress
+      features are implemented, this area can show real monthly statistics and
+      recent activity.
+    </p>
+  </div>
+
+  <div class="summary-grid">
+    <mat-card class="summary-card">
+      <mat-card-content>
+        <p class="summary-label">Workouts this month</p>
+        <p class="summary-value">Coming soon</p>
+        <p class="summary-description">
+          Will be calculated from your logged workouts.
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <mat-card-content>
+        <p class="summary-label">Total duration</p>
+        <p class="summary-value">Coming soon</p>
+        <p class="summary-description">
+          Will use monthly progress aggregation data.
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <mat-card-content>
+        <p class="summary-label">Latest workout</p>
+        <p class="summary-value">Coming soon</p>
+        <p class="summary-description">
+          Will display your most recent logged workout.
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="feature-grid">
+    @for (card of featureCards; track card.route) {
+      <mat-card class="feature-card">
+        <mat-card-content>
+          <div class="feature-icon">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+
+          <h3>{{ card.title }}</h3>
+          <p>{{ card.description }}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <a mat-button [routerLink]="card.route">
+            {{ card.actionLabel }}
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+</section>

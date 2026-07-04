@@ -1,66 +1,108 @@
-.dashboard-page {
-  min-height: 100vh;
-  padding: 2rem;
+.dashboard-shell {
+  min-height: 100dvh;
 }
 
-.dashboard-header {
+.dashboard-sidebar {
+  width: 280px;
+  border-right: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.sidebar-content {
+  min-height: 100dvh;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  flex-direction: column;
+  padding: 24px 16px;
 }
 
-.eyebrow {
-  margin: 0 0 0.25rem;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+
+  h1 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 2px 0 0;
+    color: #64748b;
+    font-size: 0.85rem;
+  }
 }
 
-h1 {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.1;
-}
-
-.subtitle {
-  margin: 0.5rem 0 0;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.dashboard-grid {
+.brand-mark {
+  width: 44px;
+  height: 44px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  place-items: center;
+  border-radius: 14px;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
 }
 
-mat-card-content {
-  margin-top: 1rem;
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-button {
-  flex-shrink: 0;
-}
+.sidebar-nav-link {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 12px;
+  border-radius: 12px;
+  min-height: 44px;
 
-button mat-icon {
-  margin-right: 0.5rem;
-}
-
-@media (max-width: 900px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
+  mat-icon {
+    margin-right: 4px;
   }
 }
 
-@media (max-width: 600px) {
-  .dashboard-page {
-    padding: 1rem;
-  }
+.active-link {
+  background: rgba(15, 23, 42, 0.08);
+}
 
-  .dashboard-header {
-    flex-direction: column;
-  }
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.current-user-card {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.current-user-label {
+  margin: 0 0 4px;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.current-user-name {
+  margin: 0;
+  font-weight: 700;
+}
+
+.current-user-email {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.logout-button {
+  color: #b91c1c;
+}
+
+.dashboard-content {
+  min-height: 100dvh;
+  padding: 32px;
+  background: #f8fafc;
 }

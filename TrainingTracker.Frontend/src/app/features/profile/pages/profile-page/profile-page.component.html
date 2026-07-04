@@ -1,0 +1,116 @@
+<section class="profile-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Profile</p>
+      <h2>Your profile</h2>
+      <p>
+        Review your account information. Editing profile details, changing your
+        password, and account deactivation can be added later.
+      </p>
+    </div>
+
+    <button
+      mat-button
+      type="button"
+      [disabled]="isLoading()"
+      (click)="loadProfile()"
+    >
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+
+  @if (isLoading() && !profile()) {
+    <mat-card class="profile-card">
+      <mat-card-content>
+        <div class="empty-state">
+          <mat-spinner diameter="48" />
+          <h3>Loading profile</h3>
+          <p>Please wait while your profile information is loaded.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else if (profile(); as userProfile) {
+    <div class="profile-layout">
+      <mat-card class="identity-card">
+        <mat-card-content>
+          <div class="avatar">
+            {{ userProfile.firstName.charAt(0) }}{{ userProfile.lastName.charAt(0) }}
+          </div>
+
+          <h3>{{ fullName() }}</h3>
+          <p>{{ userProfile.email }}</p>
+
+          <div
+            class="status-pill"
+            [class.inactive]="!userProfile.isActive"
+          >
+            {{ formatAccountStatus(userProfile.isActive) }}
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="details-card">
+        <mat-card-content>
+          <div class="details-header">
+            <div>
+              <h3>Account details</h3>
+              <p>Basic information associated with your account.</p>
+            </div>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-item">
+              <p class="detail-label">First name</p>
+              <p class="detail-value">{{ userProfile.firstName }}</p>
+            </div>
+
+            <div class="detail-item">
+              <p class="detail-label">Last name</p>
+              <p class="detail-value">{{ userProfile.lastName }}</p>
+            </div>
+
+            <div class="detail-item">
+              <p class="detail-label">Email</p>
+              <p class="detail-value">{{ userProfile.email }}</p>
+            </div>
+
+            <div class="detail-item">
+              <p class="detail-label">Created</p>
+              <p class="detail-value">
+                {{ userProfile.createdAtUtc | date: 'medium' }}
+              </p>
+            </div>
+
+            <div class="detail-item">
+              <p class="detail-label">Last updated</p>
+              <p class="detail-value">
+                @if (userProfile.updatedAtUtc) {
+                  {{ userProfile.updatedAtUtc | date: 'medium' }}
+                } @else {
+                  Not updated yet
+                }
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  } @else {
+    <mat-card class="profile-card">
+      <mat-card-content>
+        <div class="empty-state">
+          <mat-icon>account_circle</mat-icon>
+          <h3>Profile unavailable</h3>
+          <p>
+            Your profile could not be loaded. Refresh the page or log in again.
+          </p>
+
+          <button mat-button type="button" (click)="loadProfile()">
+            Try again
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</section>

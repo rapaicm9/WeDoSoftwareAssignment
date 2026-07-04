@@ -1,0 +1,196 @@
+<section class="monthly-progress-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Monthly Progress</p>
+      <h2>Training progress</h2>
+      <p>
+        Select a month and review weekly workout totals, total duration, average
+        training intensity, and average fatigue.
+      </p>
+    </div>
+  </div>
+
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <form class="filter-form" [formGroup]="form" (ngSubmit)="loadMonthlyProgress()">
+        <mat-form-field appearance="outline">
+          <mat-label>Month</mat-label>
+          <mat-select formControlName="month">
+            @for (month of monthOptions; track month.value) {
+              <mat-option [value]="month.value">
+                {{ month.label }}
+              </mat-option>
+            }
+          </mat-select>
+
+          @if (form.controls.month.hasError('required')) {
+            <mat-error>Month is required.</mat-error>
+          }
+
+          @if (
+            form.controls.month.hasError('min') ||
+            form.controls.month.hasError('max')
+          ) {
+            <mat-error>Month must be between 1 and 12.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Year</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            max="9999"
+            formControlName="year"
+          />
+
+          @if (form.controls.year.hasError('required')) {
+            <mat-error>Year is required.</mat-error>
+          }
+
+          @if (
+            form.controls.year.hasError('min') ||
+            form.controls.year.hasError('max')
+          ) {
+            <mat-error>Year must be between 1 and 9999.</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          type="submit"
+          [disabled]="form.invalid || isLoading()"
+        >
+          @if (isLoading()) {
+            <mat-spinner diameter="18" />
+          } @else {
+            <mat-icon>search</mat-icon>
+          }
+
+          Load progress
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  @if (monthlyProgress(); as progress) {
+    <div class="summary-grid">
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <p class="summary-label">Total workouts</p>
+          <p class="summary-value">{{ totalWorkoutCount() }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <p class="summary-label">Total duration</p>
+          <p class="summary-value">
+            {{ formatDuration(totalDurationMinutes()) }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <p class="summary-label">Average intensity</p>
+          <p class="summary-value">
+            {{ formatNullableAverage(averageTrainingIntensity()) }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <p class="summary-label">Average fatigue</p>
+          <p class="summary-value">
+            {{ formatNullableAverage(averageFatigue()) }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <mat-card class="progress-table-card">
+      <mat-card-content>
+        <div class="table-header">
+          <div>
+            <h3>
+              {{ monthOptions[progress.month - 1].label }} {{ progress.year }}
+            </h3>
+            <p>
+              Weekly breakdown for the selected month.
+            </p>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table mat-table [dataSource]="weeks()">
+            <ng-container matColumnDef="weekNumber">
+              <th mat-header-cell *matHeaderCellDef>Week</th>
+              <td mat-cell *matCellDef="let week">
+                {{ week.weekNumber }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateRange">
+              <th mat-header-cell *matHeaderCellDef>Date range</th>
+              <td mat-cell *matCellDef="let week">
+                {{ formatDateRange(week) }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="workoutCount">
+              <th mat-header-cell *matHeaderCellDef>Workouts</th>
+              <td mat-cell *matCellDef="let week">
+                {{ week.workoutCount }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalDurationMinutes">
+              <th mat-header-cell *matHeaderCellDef>Total duration</th>
+              <td mat-cell *matCellDef="let week">
+                {{ formatDuration(week.totalDurationMinutes) }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="averageTrainingIntensity">
+              <th mat-header-cell *matHeaderCellDef>Avg intensity</th>
+              <td mat-cell *matCellDef="let week">
+                {{ formatNullableAverage(week.averageTrainingIntensity) }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="averageFatigue">
+              <th mat-header-cell *matHeaderCellDef>Avg fatigue</th>
+              <td mat-cell *matCellDef="let week">
+                {{ formatNullableAverage(week.averageFatigue) }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <mat-card class="empty-card">
+      <mat-card-content>
+        <div class="empty-state">
+          @if (isLoading()) {
+            <mat-spinner diameter="48" />
+            <h3>Loading progress</h3>
+            <p>Please wait while your monthly progress is loaded.</p>
+          } @else {
+            <mat-icon>monitoring</mat-icon>
+            <h3>No progress loaded</h3>
+            <p>
+              Select a month and year, then load your monthly progress.
+            </p>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</section>

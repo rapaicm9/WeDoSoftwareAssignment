@@ -1,0 +1,150 @@
+<h2 mat-dialog-title>Add workout</h2>
+
+<mat-dialog-content>
+  <form class="workout-form" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title" maxlength="200" />
+
+      @if (form.controls.title.hasError('required')) {
+        <mat-error>Title is required.</mat-error>
+      }
+
+      @if (form.controls.title.hasError('maxlength')) {
+        <mat-error>Title must not exceed 200 characters.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Workout type</mat-label>
+      <mat-select formControlName="workoutType">
+        @for (option of workoutTypeOptions; track option.value) {
+          <mat-option [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        }
+      </mat-select>
+
+      @if (form.controls.workoutType.hasError('required')) {
+        <mat-error>Workout type is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Duration</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          formControlName="durationMinutes"
+        />
+        <span matTextSuffix>min</span>
+
+        @if (form.controls.durationMinutes.hasError('min')) {
+          <mat-error>Duration must be greater than zero.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Calories burned</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          formControlName="caloriesBurned"
+        />
+
+        @if (form.controls.caloriesBurned.hasError('min')) {
+          <mat-error>Calories burned must not be negative.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Training intensity</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          max="10"
+          formControlName="trainingIntensity"
+        />
+
+        @if (
+          form.controls.trainingIntensity.hasError('min') ||
+          form.controls.trainingIntensity.hasError('max')
+        ) {
+          <mat-error>Intensity must be between 1 and 10.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fatigue</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          max="10"
+          formControlName="fatigue"
+        />
+
+        @if (
+          form.controls.fatigue.hasError('min') ||
+          form.controls.fatigue.hasError('max')
+        ) {
+          <mat-error>Fatigue must be between 1 and 10.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Training date and time</mat-label>
+      <input
+        matInput
+        type="datetime-local"
+        formControlName="trainingDateTimeLocal"
+      />
+
+      @if (form.controls.trainingDateTimeLocal.hasError('required')) {
+        <mat-error>Training date and time is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Notes</mat-label>
+      <textarea
+        matInput
+        rows="4"
+        formControlName="notes"
+        maxlength="2000"
+      ></textarea>
+
+      @if (form.controls.notes.hasError('maxlength')) {
+        <mat-error>Notes must not exceed 2000 characters.</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" [disabled]="isSubmitting()" (click)="cancel()">
+    Cancel
+  </button>
+
+  <button
+    mat-flat-button
+    type="button"
+    [disabled]="form.invalid || isSubmitting()"
+    (click)="submit()"
+    >
+    @if (isSubmitting()) {
+      <mat-spinner diameter="18" />
+    } @else {
+      <mat-icon>add</mat-icon>
+    }
+
+    Add workout
+  </button>
+</mat-dialog-actions>
