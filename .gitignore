@@ -65,7 +65,6 @@ secrets.json
 *.env
 
 # Optional local appsettings files
-appsettings.Development.json
 appsettings.Local.json
 appsettings.*.Local.json
 
