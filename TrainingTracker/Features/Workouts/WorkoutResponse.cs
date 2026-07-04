@@ -1,0 +1,18 @@
+﻿using TrainingTracker.Models.Enums;
+
+namespace TrainingTracker.Features.Workouts
+{
+    public sealed record WorkoutResponse(
+        Guid Id,
+        Guid UserId,
+        string Title,
+        WorkoutType WorkoutType,
+        int DurationMinutes,
+        int CaloriesBurned,
+        int TrainingIntensity,
+        int Fatigue,
+        string? Notes,
+        DateTime TrainingDateTimeUtc,
+        DateTime CreatedAtUtc,
+        DateTime? UpdatedAtUtc);
+}
