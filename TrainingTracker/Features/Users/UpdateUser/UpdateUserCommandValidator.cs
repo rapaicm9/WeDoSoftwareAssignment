@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TrainingTracker.Common.Validators;
 
 namespace TrainingTracker.Features.Users.UpdateUser
 {
@@ -47,11 +48,7 @@ namespace TrainingTracker.Features.Users.UpdateUser
                 .When(command => command.NewPassword is not null);
 
             RuleFor(command => command.NewPassword)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage("New password must not be empty")
-                .MinimumLength(8)
-                .WithMessage("New password must be at least 8 characters long")
+                .ValidPassword("New password")
                 .When(command => command.NewPassword is not null);
 
             RuleFor(command => command)
