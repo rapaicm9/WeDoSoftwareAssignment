@@ -5,30 +5,37 @@
 }
 
 .dashboard-hero {
-  padding: 28px;
-  border-radius: 24px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 32px;
+  border: 1px solid rgba(144, 224, 239, 0.58);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(72, 202, 228, 0.28), transparent 34%),
+    rgba(231, 240, 244, 0.9);
+  box-shadow: 0 20px 48px rgba(3, 4, 94, 0.18);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 
   h2 {
     margin: 0;
+    color: var(--app-color-primary);
     font-size: 2rem;
     font-weight: 800;
+    letter-spacing: -0.04em;
   }
 
   p {
     max-width: 720px;
     margin: 12px 0 0;
-    color: #64748b;
+    color: var(--app-color-text-secondary);
     line-height: 1.6;
   }
 }
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #2563eb;
+  color: var(--app-color-bright-teal-blue);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -42,24 +49,30 @@
 
 .summary-card,
 .feature-card {
-  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(144, 224, 239, 0.58);
+  border-radius: 24px;
+  background: rgba(231, 240, 244, 0.9);
+  box-shadow: 0 14px 36px rgba(3, 4, 94, 0.12);
 }
 
 .summary-label {
   margin: 0;
-  color: #64748b;
+  color: var(--app-color-text-secondary);
   font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .summary-value {
   margin: 8px 0 0;
+  color: var(--app-color-primary);
   font-size: 1.35rem;
   font-weight: 800;
 }
 
 .summary-description {
   margin: 8px 0 0;
-  color: #64748b;
+  color: var(--app-color-text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -74,13 +87,24 @@
 
   h3 {
     margin: 16px 0 8px;
+    color: var(--app-color-primary);
     font-size: 1.2rem;
+    font-weight: 800;
   }
 
   p {
     margin: 0;
-    color: #64748b;
+    color: var(--app-color-text-secondary);
     line-height: 1.5;
+  }
+
+  mat-card-actions {
+    padding: 0 16px 16px;
+  }
+
+  a {
+    color: var(--app-color-bright-teal-blue) !important;
+    font-weight: 700;
   }
 }
 
@@ -89,11 +113,16 @@
   height: 48px;
   display: grid;
   place-items: center;
-  border-radius: 16px;
-  background: rgba(37, 99, 235, 0.1);
+  border-radius: 18px;
+  color: var(--app-color-text-inverse);
+  background: linear-gradient(
+    135deg,
+    var(--app-color-deep-twilight),
+    var(--app-color-blue-green)
+  );
 
   mat-icon {
-    color: #2563eb;
+    color: inherit;
   }
 }
 

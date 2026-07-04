@@ -9,40 +9,67 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
-  padding: 28px;
-  border-radius: 24px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 32px;
+  border: 1px solid rgba(144, 224, 239, 0.58);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(72, 202, 228, 0.26), transparent 34%),
+    rgba(231, 240, 244, 0.9);
+  box-shadow: 0 20px 48px rgba(3, 4, 94, 0.18);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 
   h2 {
     margin: 0;
+    color: var(--app-color-primary);
     font-size: 2rem;
     font-weight: 800;
+    letter-spacing: -0.04em;
   }
 
   p {
     max-width: 720px;
     margin: 12px 0 0;
-    color: #64748b;
+    color: var(--app-color-text-secondary);
     line-height: 1.6;
   }
 
   button {
     flex-shrink: 0;
+    border-radius: 999px;
+    color: var(--app-color-text-inverse) !important;
+    background: linear-gradient(
+      135deg,
+      var(--app-color-deep-twilight),
+      var(--app-color-bright-teal-blue)
+    ) !important;
+    box-shadow: 0 12px 28px rgba(3, 4, 94, 0.24);
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        var(--app-color-french-blue),
+        var(--app-color-blue-green)
+      ) !important;
+    }
   }
 }
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #2563eb;
+  color: var(--app-color-bright-teal-blue);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .workouts-card {
+  overflow: hidden;
+  border: 1px solid rgba(144, 224, 239, 0.58);
   border-radius: 24px;
+  background: rgba(231, 240, 244, 0.9);
+  box-shadow: 0 14px 36px rgba(3, 4, 94, 0.12);
 }
 
 .empty-state {
@@ -51,25 +78,32 @@
   place-items: center;
   align-content: center;
   text-align: center;
-  color: #64748b;
+  color: var(--app-color-text-secondary);
 
   mat-icon {
-    width: 56px;
-    height: 56px;
-    font-size: 56px;
-    color: #94a3b8;
+    width: 58px;
+    height: 58px;
+    font-size: 58px;
+    color: var(--app-color-blue-green);
   }
 
   h3 {
     margin: 16px 0 0;
-    color: #0f172a;
+    color: var(--app-color-primary);
     font-size: 1.25rem;
+    font-weight: 800;
   }
 
   p {
     max-width: 520px;
     margin: 8px 0 16px;
     line-height: 1.6;
+  }
+
+  button {
+    border-radius: 999px;
+    color: var(--app-color-bright-teal-blue) !important;
+    font-weight: 700;
   }
 }
 
@@ -79,4 +113,29 @@
 
 table {
   width: 100%;
+  background: transparent;
+}
+
+th {
+  color: var(--app-color-primary);
+  font-weight: 800;
+}
+
+td {
+  color: var(--app-color-text-secondary);
+}
+
+tr:hover td {
+  background: rgba(72, 202, 228, 0.08);
+}
+
+@media (max-width: 750px) {
+  .page-header {
+    flex-direction: column;
+    padding: 24px;
+
+    button {
+      width: 100%;
+    }
+  }
 }

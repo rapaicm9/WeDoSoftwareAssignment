@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+
+import { TokenStorageService } from '../../../../core/auth/token-storage.service';
 
 interface DashboardFeatureCard {
   readonly title: string;
@@ -25,6 +26,14 @@ interface DashboardFeatureCard {
   styleUrl: './dashboard-home-page.component.scss',
 })
 export class DashboardHomePageComponent {
+  private readonly tokenStorageService = inject(TokenStorageService);
+
+  protected readonly heroTitle = computed(() => {
+    const firstName = this.tokenStorageService.currentUser()?.firstName?.trim();
+
+    return firstName ? `Welcome back, ${firstName}` : 'Welcome back';
+  });
+
   protected readonly featureCards: DashboardFeatureCard[] = [
     {
       title: 'Workouts',

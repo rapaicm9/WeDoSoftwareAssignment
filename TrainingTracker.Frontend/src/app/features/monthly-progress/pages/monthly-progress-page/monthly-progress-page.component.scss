@@ -5,30 +5,37 @@
 }
 
 .page-header {
-  padding: 28px;
-  border-radius: 24px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 32px;
+  border: 1px solid rgba(144, 224, 239, 0.58);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(72, 202, 228, 0.26), transparent 34%),
+    rgba(231, 240, 244, 0.9);
+  box-shadow: 0 20px 48px rgba(3, 4, 94, 0.18);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 
   h2 {
     margin: 0;
+    color: var(--app-color-primary);
     font-size: 2rem;
     font-weight: 800;
+    letter-spacing: -0.04em;
   }
 
   p {
     max-width: 720px;
     margin: 12px 0 0;
-    color: #64748b;
+    color: var(--app-color-text-secondary);
     line-height: 1.6;
   }
 }
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #2563eb;
+  color: var(--app-color-bright-teal-blue);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -37,7 +44,11 @@
 .summary-card,
 .progress-table-card,
 .empty-card {
+  overflow: hidden;
+  border: 1px solid rgba(144, 224, 239, 0.58);
   border-radius: 24px;
+  background: rgba(231, 240, 244, 0.9);
+  box-shadow: 0 14px 36px rgba(3, 4, 94, 0.12);
 }
 
 .filter-form {
@@ -47,10 +58,30 @@
 
   mat-form-field {
     width: 220px;
+
+    --mdc-outlined-text-field-focus-outline-color: var(--app-color-bright-teal-blue);
+    --mdc-outlined-text-field-focus-label-text-color: var(--app-color-bright-teal-blue);
+    --mdc-outlined-text-field-hover-outline-color: var(--app-color-blue-green);
+    --mdc-outlined-text-field-caret-color: var(--app-color-bright-teal-blue);
   }
 
   button {
     min-height: 56px;
+    border-radius: 999px;
+    color: var(--app-color-text-inverse) !important;
+    background: linear-gradient(
+      135deg,
+      var(--app-color-deep-twilight),
+      var(--app-color-bright-teal-blue)
+    ) !important;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(
+        135deg,
+        var(--app-color-french-blue),
+        var(--app-color-blue-green)
+      ) !important;
+    }
 
     mat-spinner {
       margin-right: 8px;
@@ -66,12 +97,14 @@
 
 .summary-label {
   margin: 0;
-  color: #64748b;
+  color: var(--app-color-text-secondary);
   font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .summary-value {
   margin: 8px 0 0;
+  color: var(--app-color-primary);
   font-size: 1.45rem;
   font-weight: 800;
 }
@@ -81,12 +114,14 @@
 
   h3 {
     margin: 0;
+    color: var(--app-color-primary);
     font-size: 1.25rem;
+    font-weight: 800;
   }
 
   p {
     margin: 6px 0 0;
-    color: #64748b;
+    color: var(--app-color-text-secondary);
   }
 }
 
@@ -96,6 +131,20 @@
 
 table {
   width: 100%;
+  background: transparent;
+}
+
+th {
+  color: var(--app-color-primary);
+  font-weight: 800;
+}
+
+td {
+  color: var(--app-color-text-secondary);
+}
+
+tr:hover td {
+  background: rgba(72, 202, 228, 0.08);
 }
 
 .empty-state {
@@ -104,19 +153,20 @@ table {
   place-items: center;
   align-content: center;
   text-align: center;
-  color: #64748b;
+  color: var(--app-color-text-secondary);
 
   mat-icon {
-    width: 56px;
-    height: 56px;
-    font-size: 56px;
-    color: #94a3b8;
+    width: 58px;
+    height: 58px;
+    font-size: 58px;
+    color: var(--app-color-blue-green);
   }
 
   h3 {
     margin: 16px 0 0;
-    color: #0f172a;
+    color: var(--app-color-primary);
     font-size: 1.25rem;
+    font-weight: 800;
   }
 
   p {
@@ -133,6 +183,10 @@ table {
 }
 
 @media (max-width: 750px) {
+  .page-header {
+    padding: 24px;
+  }
+
   .filter-form {
     flex-direction: column;
 

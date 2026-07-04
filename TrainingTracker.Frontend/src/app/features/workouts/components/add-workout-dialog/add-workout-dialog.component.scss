@@ -1,9 +1,20 @@
+:host {
+  display: block;
+}
+
 .workout-form {
   width: min(720px, 100%);
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding-top: 8px;
+
+  mat-form-field {
+    --mdc-outlined-text-field-focus-outline-color: var(--app-color-bright-teal-blue);
+    --mdc-outlined-text-field-focus-label-text-color: var(--app-color-bright-teal-blue);
+    --mdc-outlined-text-field-hover-outline-color: var(--app-color-blue-green);
+    --mdc-outlined-text-field-caret-color: var(--app-color-bright-teal-blue);
+  }
 }
 
 .form-row {
@@ -13,8 +24,27 @@
 }
 
 button {
+  border-radius: 999px;
+
   mat-spinner {
     margin-right: 8px;
+  }
+}
+
+button[mat-flat-button] {
+  color: var(--app-color-text-inverse) !important;
+  background: linear-gradient(
+    135deg,
+    var(--app-color-deep-twilight),
+    var(--app-color-bright-teal-blue)
+  ) !important;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      135deg,
+      var(--app-color-french-blue),
+      var(--app-color-blue-green)
+    ) !important;
   }
 }
 
