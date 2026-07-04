@@ -1,10 +1,10 @@
 <section class="dashboard-home">
   <div class="dashboard-hero">
-
     <h2>{{ heroTitle() }}</h2>
 
     <p>
-      What workout did you do today? Log it now, then track how your month is progressing.
+      What workout did you do today? Log it now, then track how your month is
+      progressing.
     </p>
   </div>
 
@@ -12,30 +12,83 @@
     <mat-card class="summary-card">
       <mat-card-content>
         <p class="summary-label">Workouts this month</p>
-        <p class="summary-value">Coming soon</p>
-        <p class="summary-description">
-          Will be calculated from your logged workouts.
-        </p>
+
+        @if (isLoading()) {
+          <p class="summary-value">Loading...</p>
+          <p class="summary-description">
+            Fetching your workout summary.
+          </p>
+        } @else if (hasLoadError()) {
+          <p class="summary-value">Unavailable</p>
+          <p class="summary-description">
+            Workout summary could not be loaded.
+          </p>
+        } @else {
+          <p class="summary-value">{{ workoutsThisMonthCount() }}</p>
+          <p class="summary-description">
+            Logged in {{ currentMonthName }}.
+          </p>
+        }
       </mat-card-content>
     </mat-card>
 
     <mat-card class="summary-card">
       <mat-card-content>
         <p class="summary-label">Total duration</p>
-        <p class="summary-value">Coming soon</p>
-        <p class="summary-description">
-          Will use monthly progress aggregation data.
-        </p>
+
+        @if (isLoading()) {
+          <p class="summary-value">Loading...</p>
+          <p class="summary-description">
+            Calculating your monthly training time.
+          </p>
+        } @else if (hasLoadError()) {
+          <p class="summary-value">Unavailable</p>
+          <p class="summary-description">
+            Total duration could not be loaded.
+          </p>
+        } @else {
+          <p class="summary-value">
+            {{ formatDuration(totalDurationThisMonth()) }}
+          </p>
+          <p class="summary-description">
+            Across {{ workoutsThisMonthCount() }}
+            {{ workoutsThisMonthCount() === 1 ? 'workout' : 'workouts' }} this
+            month.
+          </p>
+        }
       </mat-card-content>
     </mat-card>
 
     <mat-card class="summary-card">
       <mat-card-content>
         <p class="summary-label">Latest workout</p>
-        <p class="summary-value">Coming soon</p>
-        <p class="summary-description">
-          Will display your most recent logged workout.
-        </p>
+
+        @if (isLoading()) {
+          <p class="summary-value">Loading...</p>
+          <p class="summary-description">
+            Looking for your latest logged workout.
+          </p>
+        } @else if (hasLoadError()) {
+          <p class="summary-value">Unavailable</p>
+          <p class="summary-description">
+            Latest workout could not be loaded.
+          </p>
+        } @else if (latestWorkout(); as workout) {
+          <p class="summary-value">{{ workout.title }}</p>
+          <p class="summary-description">
+            {{ formatWorkoutType(workout.workoutType) }} ·
+            {{ formatDuration(workout.durationMinutes) }}
+          </p>
+          <p class="summary-description">
+            {{ formatWorkoutDate(workout.trainingDateTimeUtc) }} · Intensity
+            {{ workout.trainingIntensity }}/10 · Fatigue {{ workout.fatigue }}/10
+          </p>
+        } @else {
+          <p class="summary-value">No workouts yet</p>
+          <p class="summary-description">
+            Add your first workout to start tracking your activity.
+          </p>
+        }
       </mat-card-content>
     </mat-card>
   </div>
@@ -49,6 +102,7 @@
           </div>
 
           <h3>{{ card.title }}</h3>
+
           <p>{{ card.description }}</p>
         </mat-card-content>
 

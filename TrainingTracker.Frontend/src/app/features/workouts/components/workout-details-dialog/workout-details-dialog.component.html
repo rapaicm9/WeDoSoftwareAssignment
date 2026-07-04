@@ -1,0 +1,74 @@
+<mat-dialog-content>
+  <section class="summary-header">
+    <p class="eyebrow">Workout summary</p>
+
+    <h3>{{ workout.title }}</h3>
+
+    <p>
+      {{ formatWorkoutType(workout.workoutType) }}
+    </p>
+  </section>
+
+  <mat-divider></mat-divider>
+
+  <section class="details-grid">
+    <div class="detail-item">
+      <span class="detail-label">Date</span>
+      <span class="detail-value">
+        {{ workout.trainingDateTimeUtc | date: 'medium' }}
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Duration</span>
+      <span class="detail-value">
+        {{ formatDuration(workout.durationMinutes) }}
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Calories</span>
+      <span class="detail-value">
+        {{ workout.caloriesBurned }} kcal
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Training intensity</span>
+      <span class="detail-value">
+        {{ workout.trainingIntensity }}/10
+      </span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Fatigue</span>
+      <span class="detail-value">
+        {{ workout.fatigue }}/10
+      </span>
+    </div>
+  </section>
+
+  <mat-divider></mat-divider>
+
+  <section class="notes-section">
+    <h4>Notes</h4>
+
+    @if (notes) {
+      <p>{{ notes }}</p>
+    } @else {
+      <p class="empty-notes">
+        No notes added for this workout.
+      </p>
+    }
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    type="button"
+    (click)="close()"
+  >
+    Close
+  </button>
+</mat-dialog-actions>

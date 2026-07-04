@@ -1,0 +1,38 @@
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--app-color-primary);
+  font-weight: 800;
+
+  mat-icon {
+    color: #b3261e;
+  }
+}
+
+p {
+  margin: 0;
+  color: var(--app-color-text-secondary);
+  line-height: 1.6;
+
+  & + p {
+    margin-top: 8px;
+  }
+}
+
+.warning-text {
+  font-weight: 700;
+}
+
+button {
+  border-radius: 999px;
+}
+
+.delete-action {
+  color: var(--app-color-text-inverse) !important;
+  background: #b3261e !important;
+
+  &:hover {
+    background: #8c1d18 !important;
+  }
+}

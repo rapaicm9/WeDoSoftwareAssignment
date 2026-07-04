@@ -33,6 +33,7 @@ export interface WorkoutResponse {
   readonly notes: string | null;
   readonly trainingDateTimeUtc: string;
   readonly createdAtUtc: string;
+  readonly updatedAtUtc?: string | null;
 }
 
 export const WORKOUT_TYPE_OPTIONS: readonly WorkoutTypeOption[] = [
