@@ -124,18 +124,6 @@ namespace TrainingTracker.Features.Users.UpdateUser
 
                 return EmailAlreadyExistsResult();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    ex,
-                    "An error occurred while updating user with ID {UserId}.",
-                    request.UserId);
-
-                return Result<UserResponse>.Failure(new Error(
-                    Code: "Users.UpdateFailed",
-                    Message: "An error occurred while updating the user",
-                    Type: ErrorType.Failure));
-            }
         }
 
         private static Result<UserResponse> UserNotFoundResult()

@@ -23,40 +23,27 @@ namespace TrainingTracker.Features.Workouts.DeleteWorkout
             DeleteWorkoutCommand request,
             CancellationToken cancellationToken)
         {
-            try
+            var workout = await _dbContext.Workouts
+                .Where(workout =>
+                    workout.Id == request.WorkoutId &&
+                    workout.UserId == request.UserId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (workout is null)
             {
-                var workout = await _dbContext.Workouts
-                    .Where(workout =>
-                        workout.Id == request.WorkoutId &&
-                        workout.UserId == request.UserId)
-                    .FirstOrDefaultAsync(cancellationToken);
-
-                if (workout is null)
-                {
-                    _logger.LogWarning(
-                        "Workout deletion failed. Workout ID {WorkoutId} was not found for User ID {UserId}.",
-                        request.WorkoutId,
-                        request.UserId);
-
-                    return WorkoutNotFoundResult();
-                }
-
-                _dbContext.Workouts.Remove(workout);
-                await _dbContext.SaveChangesAsync(cancellationToken);
-
-                return Result<DeleteWorkoutResponse>.Success(
-                    new DeleteWorkoutResponse(workout.Id));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    ex,
-                    "Unexpected error while deleting Workout ID {WorkoutId} for User ID {UserId}",
+                _logger.LogWarning(
+                    "Workout deletion failed. Workout ID {WorkoutId} was not found for User ID {UserId}.",
                     request.WorkoutId,
                     request.UserId);
 
-                throw;
+                return WorkoutNotFoundResult();
             }
+
+            _dbContext.Workouts.Remove(workout);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return Result<DeleteWorkoutResponse>.Success(
+                new DeleteWorkoutResponse(workout.Id));
         }
         private static Result<DeleteWorkoutResponse> WorkoutNotFoundResult()
         {

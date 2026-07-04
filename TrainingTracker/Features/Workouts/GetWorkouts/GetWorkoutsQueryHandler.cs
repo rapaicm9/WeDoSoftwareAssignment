@@ -23,67 +23,55 @@ namespace TrainingTracker.Features.Workouts.GetWorkouts
             GetWorkoutsQuery request,
             CancellationToken cancellationToken)
         {
-            try
-            {
-                var user = await _dbContext.Users
-                    .AsNoTracking()
-                    .Where(user => user.Id == request.UserId)
-                    .Select(user => new
-                    {
-                        user.Id,
-                        user.IsActive
-                    })
-                    .FirstOrDefaultAsync(cancellationToken);
-
-                if (user is null)
+            var user = await _dbContext.Users
+                .AsNoTracking()
+                .Where(user => user.Id == request.UserId)
+                .Select(user => new
                 {
-                    _logger.LogWarning(
-                        "Workout retrieval failed. User ID {UserId} was not found.",
-                        request.UserId);
+                    user.Id,
+                    user.IsActive
+                })
+                .FirstOrDefaultAsync(cancellationToken);
 
-                    return UserNotFoundResult();
-                }
-
-                if (!user.IsActive)
-                {
-                    _logger.LogWarning(
-                        "Workout retrieval failed. User ID {UserId} is inactive.",
-                        request.UserId);
-
-                    return UserInactiveResult();
-                }
-
-                var workouts = await _dbContext.Workouts
-                    .AsNoTracking()
-                    .Where(workout => workout.UserId == request.UserId)
-                    .OrderByDescending(workout => workout.TrainingDateTimeUtc)
-                    .ThenByDescending(workout => workout.CreatedAtUtc)
-                    .Select(workout => new WorkoutResponse(
-                        workout.Id,
-                        workout.UserId,
-                        workout.Title,
-                        workout.Type,
-                        workout.DurationMinutes,
-                        workout.CaloriesBurned,
-                        workout.TrainingIntensity,
-                        workout.Fatigue,
-                        workout.Notes,
-                        workout.TrainingDateTimeUtc,
-                        workout.CreatedAtUtc,
-                        workout.UpdatedAtUtc))
-                    .ToListAsync(cancellationToken);
-
-                return Result<IReadOnlyCollection<WorkoutResponse>>.Success(workouts);
-            }
-            catch (Exception ex)
+            if (user is null)
             {
-                _logger.LogError(
-                    ex,
-                    "Unexpected error while retrieving workouts for User ID {UserId}",
+                _logger.LogWarning(
+                    "Workout retrieval failed. User ID {UserId} was not found.",
                     request.UserId);
 
-                throw;
+                return UserNotFoundResult();
             }
+
+            if (!user.IsActive)
+            {
+                _logger.LogWarning(
+                    "Workout retrieval failed. User ID {UserId} is inactive.",
+                    request.UserId);
+
+                return UserInactiveResult();
+            }
+
+            var workouts = await _dbContext.Workouts
+                .AsNoTracking()
+                .Where(workout => workout.UserId == request.UserId)
+                .OrderByDescending(workout => workout.TrainingDateTimeUtc)
+                .ThenByDescending(workout => workout.CreatedAtUtc)
+                .Select(workout => new WorkoutResponse(
+                    workout.Id,
+                    workout.UserId,
+                    workout.Title,
+                    workout.Type,
+                    workout.DurationMinutes,
+                    workout.CaloriesBurned,
+                    workout.TrainingIntensity,
+                    workout.Fatigue,
+                    workout.Notes,
+                    workout.TrainingDateTimeUtc,
+                    workout.CreatedAtUtc,
+                    workout.UpdatedAtUtc))
+                .ToListAsync(cancellationToken);
+
+            return Result<IReadOnlyCollection<WorkoutResponse>>.Success(workouts);
         }
 
         private static Result<IReadOnlyCollection<WorkoutResponse>> UserNotFoundResult()

@@ -8,7 +8,7 @@ using TrainingTracker.Models.Entities;
 
 namespace TrainingTracker.Features.Auth.Login
 {
-    public sealed class LoginCommandHandler 
+    public sealed class LoginCommandHandler
         : ICommandHandler<LoginCommand, LoginResponse>
     {
         private readonly AppDbContext _dbContext;
@@ -35,63 +35,53 @@ namespace TrainingTracker.Features.Auth.Login
             LoginCommand request,
             CancellationToken cancellationToken)
         {
-            try
+            var normalizedEmail = request.Email.Trim().ToUpperInvariant();
+
+            var user = await _dbContext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(
+                    user => user.NormalizedEmail == normalizedEmail,
+                    cancellationToken);
+
+            if (user is null)
             {
-                var normalizedEmail = request.Email.Trim().ToUpperInvariant();
+                _logger.LogWarning("Login failed. User with email {Email} was not found.", normalizedEmail);
 
-                var user = await _dbContext.Users
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(
-                        user => user.NormalizedEmail == normalizedEmail,
-                        cancellationToken);
-
-                if (user is null)
-                {
-                    _logger.LogWarning("Login failed. User with email {Email} was not found.", normalizedEmail);
-
-                    return InvalidCredentialsResult();
-                }
-
-                var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(
-                    user,
-                    user.PasswordHash,
-                    request.Password);
-
-                if (passwordVerificationResult == PasswordVerificationResult.Failed)
-                {
-                    _logger.LogWarning("Login failed. Invalid password for User ID {UserId}", user.Id);
-
-                    return InvalidCredentialsResult();
-                }
-
-                if (!user.IsActive)
-                {
-                    _logger.LogWarning("Login failed. User ID {UserId} is inactive.", user.Id);
-
-                    return UserInactiveResult();
-                }
-
-                var accessToken = _jwtGenerator.GenerateAccessToken(user);
-
-                var response = new LoginResponse(
-                    AccessToken: accessToken,
-                    TokenType: "Bearer",
-                    ExpiresInSeconds: _jwtOptions.AccessTokenExpirationMinutes * 60,
-                    UserId: user.Id,
-                    Email: user.Email,
-                    FirstName: user.FirstName,
-                    LastName: user.LastName,
-                    FullName: $"{user.FirstName} {user.LastName}".Trim());
-
-                return Result<LoginResponse>.Success(response);
+                return InvalidCredentialsResult();
             }
-            
-            catch (Exception ex)
+
+            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(
+                user,
+                user.PasswordHash,
+                request.Password);
+
+            if (passwordVerificationResult == PasswordVerificationResult.Failed)
             {
-                _logger.LogError(ex, "Unexpected error during login.");
+                _logger.LogWarning("Login failed. Invalid password for User ID {UserId}", user.Id);
 
-                throw;
+                return InvalidCredentialsResult();
             }
+
+            if (!user.IsActive)
+            {
+                _logger.LogWarning("Login failed. User ID {UserId} is inactive.", user.Id);
+
+                return UserInactiveResult();
+            }
+
+            var accessToken = _jwtGenerator.GenerateAccessToken(user);
+
+            var response = new LoginResponse(
+                AccessToken: accessToken,
+                TokenType: "Bearer",
+                ExpiresInSeconds: _jwtOptions.AccessTokenExpirationMinutes * 60,
+                UserId: user.Id,
+                Email: user.Email,
+                FirstName: user.FirstName,
+                LastName: user.LastName,
+                FullName: $"{user.FirstName} {user.LastName}".Trim());
+
+            return Result<LoginResponse>.Success(response);
         }
 
         private static Result<LoginResponse> InvalidCredentialsResult()

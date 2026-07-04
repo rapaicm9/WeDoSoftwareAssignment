@@ -9,99 +9,88 @@ namespace TrainingTracker.Features.Workouts.GetMonthlyProgress
         : IQueryHandler<GetMonthlyProgressQuery, GetMonthlyProgressResponse>
     {
         private readonly AppDbContext _dbContext;
-        private readonly ILogger<GetMonthlyProgressQueryHandler> _logger;
 
-        public GetMonthlyProgressQueryHandler(AppDbContext dbContext, ILogger<GetMonthlyProgressQueryHandler> logger)
+        public GetMonthlyProgressQueryHandler(AppDbContext dbContext)
         {
             _dbContext = dbContext;
-            _logger = logger;
         }
 
         public async Task<Result<GetMonthlyProgressResponse>> Handle(
             GetMonthlyProgressQuery request,
             CancellationToken cancellationToken)
         {
-            try
-            {
-                if (request.Year is < 1 or > 9999)
-                    return InvalidYearResult();
+            if (request.Year is < 1 or > 9999)
+                return InvalidYearResult();
 
-                if (request.Month is < 1 or > 12)
-                    return InvalidMonthResult();
+            if (request.Month is < 1 or > 12)
+                return InvalidMonthResult();
 
-                var monthStartUtc = new DateTime(
-                    request.Year,
-                    request.Month,
-                    day: 1,
-                    hour: 0,
-                    minute: 0,
-                    second: 0,
-                    kind: DateTimeKind.Utc);
+            var monthStartUtc = new DateTime(
+                request.Year,
+                request.Month,
+                day: 1,
+                hour: 0,
+                minute: 0,
+                second: 0,
+                kind: DateTimeKind.Utc);
 
-                var monthEndUtc = monthStartUtc.AddMonths(1);
+            var monthEndUtc = monthStartUtc.AddMonths(1);
 
-                var workouts = await _dbContext.Workouts
-                    .AsNoTracking()
-                    .Where(workout =>
-                        workout.UserId == request.UserId &&
-                        workout.TrainingDateTimeUtc >= monthStartUtc &&
-                        workout.TrainingDateTimeUtc < monthEndUtc)
-                    .Select(workout => new WorkoutProgressData(
-                        workout.TrainingDateTimeUtc,
-                        workout.DurationMinutes,
-                        workout.TrainingIntensity,
-                        workout.Fatigue))
-                    .ToListAsync(cancellationToken);
+            var workouts = await _dbContext.Workouts
+                .AsNoTracking()
+                .Where(workout =>
+                    workout.UserId == request.UserId &&
+                    workout.TrainingDateTimeUtc >= monthStartUtc &&
+                    workout.TrainingDateTimeUtc < monthEndUtc)
+                .Select(workout => new WorkoutProgressData(
+                    workout.TrainingDateTimeUtc,
+                    workout.DurationMinutes,
+                    workout.TrainingIntensity,
+                    workout.Fatigue))
+                .ToListAsync(cancellationToken);
 
-                var weekBuckets = CreateWeekBuckets(request.Year, request.Month);
+            var weekBuckets = CreateWeekBuckets(request.Year, request.Month);
 
-                var weeklyProgress = weekBuckets
-                    .Select(bucket =>
-                    {
-
-                        var workoutsInWeek = workouts
-                            .Where(workouts =>
-                            {
-                                var trainingDate = DateOnly.FromDateTime(workouts.TrainingDateTimeUtc);
-
-                                return trainingDate >= bucket.StartDate &&
-                                       trainingDate <= bucket.EndDate;
-                            })
-                            .ToList();
-
-                        return new WeeklyProgressResponse
-                        {
-                            WeekNumber = bucket.WeekNumber,
-                            WeekStartDate = bucket.StartDate,
-                            WeekEndDate = bucket.EndDate,
-                            TotalDurationMinutes = workoutsInWeek.Sum(workout => workout.DurationMinutes),
-                            WorkoutCount = workoutsInWeek.Count,
-                            AverageTrainingIntensity = workoutsInWeek.Count == 0
-                                ? null
-                                : Math.Round(workoutsInWeek.Average(workout => workout.TrainingIntensity), 2),
-                            AverageFatigue = workoutsInWeek.Count == 0
-                                ? null
-                                : Math.Round(workoutsInWeek.Average(workout => workout.Fatigue), 2)
-                        };
-
-                    })
-                    .ToList();
-
-                var response = new GetMonthlyProgressResponse
+            var weeklyProgress = weekBuckets
+                .Select(bucket =>
                 {
-                    Year = request.Year,
-                    Month = request.Month,
-                    Weeks = weeklyProgress
-                };
 
-                return Result<GetMonthlyProgressResponse>.Success(response);
-            }
-            catch (Exception ex)
+                    var workoutsInWeek = workouts
+                        .Where(workouts =>
+                        {
+                            var trainingDate = DateOnly.FromDateTime(workouts.TrainingDateTimeUtc);
+
+                            return trainingDate >= bucket.StartDate &&
+                                   trainingDate <= bucket.EndDate;
+                        })
+                        .ToList();
+
+                    return new WeeklyProgressResponse
+                    {
+                        WeekNumber = bucket.WeekNumber,
+                        WeekStartDate = bucket.StartDate,
+                        WeekEndDate = bucket.EndDate,
+                        TotalDurationMinutes = workoutsInWeek.Sum(workout => workout.DurationMinutes),
+                        WorkoutCount = workoutsInWeek.Count,
+                        AverageTrainingIntensity = workoutsInWeek.Count == 0
+                            ? null
+                            : Math.Round(workoutsInWeek.Average(workout => workout.TrainingIntensity), 2),
+                        AverageFatigue = workoutsInWeek.Count == 0
+                            ? null
+                            : Math.Round(workoutsInWeek.Average(workout => workout.Fatigue), 2)
+                    };
+
+                })
+                .ToList();
+
+            var response = new GetMonthlyProgressResponse
             {
-                _logger.LogError(ex, "Unexpected error while retrieving monthly progress for User ID {UserId}, Year {Year}, Month {Month}", request.UserId, request.Year, request.Month);
+                Year = request.Year,
+                Month = request.Month,
+                Weeks = weeklyProgress
+            };
 
-                throw;
-            }
+            return Result<GetMonthlyProgressResponse>.Success(response);
         }
 
         private sealed record WeekBucket(
@@ -125,7 +114,7 @@ namespace TrainingTracker.Features.Workouts.GetMonthlyProgress
             var currentStartDate = firstDayOfMonth;
             var weekNumber = 1;
 
-            while(currentStartDate <= lastDayOfMonth)
+            while (currentStartDate <= lastDayOfMonth)
             {
                 var daysUntilSunday = GetDaysUntilSunday(currentStartDate.DayOfWeek);
                 var currentEndDate = currentStartDate.AddDays(daysUntilSunday);
