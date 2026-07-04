@@ -10,8 +10,6 @@ namespace TrainingTracker.Features.Auth.Login
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Email is required")
-                .Must(email => !string.IsNullOrWhiteSpace(email))
-                .WithMessage("Email is required")
                 .EmailAddress()
                 .WithMessage("Email format is invalid")
                 .MaximumLength(256)
