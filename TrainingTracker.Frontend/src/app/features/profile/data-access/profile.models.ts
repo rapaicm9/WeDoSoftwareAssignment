@@ -7,3 +7,11 @@ export interface UserProfileResponse {
   readonly createdAtUtc: string;
   readonly updatedAtUtc: string | null;
 }
+
+export interface UpdateUserRequest {
+   firstName?: string;
+   lastName?: string;
+   email?: string;
+   currentPassword?: string;
+   newPassword?: string;
+}

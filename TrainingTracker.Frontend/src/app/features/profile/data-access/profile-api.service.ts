@@ -1,17 +1,14 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-
 import { catchError, Observable, throwError } from 'rxjs';
-
 import { environment } from '../../../../environments/environment';
-import { UserProfileResponse } from './profile.models';
+import { UpdateUserRequest, UserProfileResponse } from './profile.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileApiService {
   private readonly httpClient = inject(HttpClient);
-
   private readonly usersApiUrl = `${environment.apiBaseUrl}/users`;
 
   public getUserById(userId: string): Observable<UserProfileResponse> {
@@ -20,6 +17,28 @@ export class ProfileApiService {
       .pipe(
         catchError((error: HttpErrorResponse) =>
           this.handleError(error, 'Get user profile'),
+        ),
+      );
+  }
+
+  public updateCurrentUser(
+    request: UpdateUserRequest,
+  ): Observable<UserProfileResponse> {
+    return this.httpClient
+      .patch<UserProfileResponse>(`${this.usersApiUrl}/me`, request)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.handleError(error, 'Update user profile'),
+        ),
+      );
+  }
+
+  public deactivateCurrentUser(): Observable<UserProfileResponse> {
+    return this.httpClient
+      .patch<UserProfileResponse>(`${this.usersApiUrl}/me/deactivate`, null)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.handleError(error, 'Deactivate user account'),
         ),
       );
   }

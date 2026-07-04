@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 interface ApiProblemDetails {
   title?: string;
   detail?: string;
+  errorCode?: string;
   errors?: Record<string, string[]>;
 }
 
@@ -33,6 +34,20 @@ export function getApiErrorMessage(
   }
 
   return fallbackMessage;
+}
+
+export function getApiErrorCode(error: unknown): string | null {
+  if (!(error instanceof HttpErrorResponse)) {
+    return null;
+  }
+
+  if (!isApiProblemDetails(error.error)) {
+    return null;
+  }
+
+  return typeof error.error.errorCode === 'string'
+    ? error.error.errorCode
+    : null;
 }
 
 function getValidationErrors(problemDetails: ApiProblemDetails): string[] {

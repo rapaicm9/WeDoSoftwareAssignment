@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>
+  <mat-icon>warning</mat-icon>
+  Deactivate account?
+</h2>
+
+<mat-dialog-content>
+  <p>
+    This will deactivate your account and immediately sign you out.
+  </p>
+
+  <p class="warning-text">
+    You will not be able to log in again unless the account is reactivated by the system.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+
+  <button
+    mat-flat-button
+    type="button"
+    class="deactivate-action"
+    (click)="confirm()"
+  >
+    Deactivate
+  </button>
+</mat-dialog-actions>
