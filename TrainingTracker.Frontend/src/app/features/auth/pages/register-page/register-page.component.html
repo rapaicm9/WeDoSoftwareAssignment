@@ -1,14 +1,18 @@
-<main class="register-page">
-  <mat-card class="register-card" appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Create account</mat-card-title>
-      <mat-card-subtitle>Start tracking your workouts</mat-card-subtitle>
-    </mat-card-header>
+<main class="auth-page">
+  <mat-card class="auth-card" appearance="outlined">
+    <div class="auth-header">
+      <div class="auth-logo">
+        <mat-icon>person_add</mat-icon>
+      </div>
 
-    <mat-card-content>
-      <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="name-row">
-          <mat-form-field appearance="outline">
+      <h1 class="auth-title">Create account</h1>
+      <p class="auth-subtitle">Start tracking your workouts</p>
+    </div>
+
+    <mat-card-content class="auth-card-content">
+      <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="auth-name-grid">
+          <mat-form-field class="auth-field" appearance="outline">
             <mat-label>First name</mat-label>
             <input
               matInput
@@ -28,7 +32,7 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field class="auth-field" appearance="outline">
             <mat-label>Last name</mat-label>
             <input
               matInput
@@ -49,7 +53,7 @@
           </mat-form-field>
         </div>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field class="auth-field" appearance="outline">
           <mat-label>Email</mat-label>
           <input
             matInput
@@ -69,7 +73,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field class="auth-field" appearance="outline">
           <mat-label>Password</mat-label>
           <input
             matInput
@@ -103,7 +107,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field class="auth-field" appearance="outline">
           <mat-label>Confirm password</mat-label>
           <input
             matInput
@@ -140,7 +144,7 @@
 
         <button
           mat-flat-button
-          color="primary"
+          class="auth-submit-button"
           type="submit"
           [disabled]="isSubmitting()"
         >
@@ -149,9 +153,11 @@
       </form>
     </mat-card-content>
 
-    <mat-card-actions align="end">
-      <span class="login-text">Already have an account?</span>
-      <a mat-button [routerLink]="['/login']">Sign in</a>
+    <mat-card-actions class="auth-actions">
+      <span class="auth-footer-text">Already have an account?</span>
+      <a mat-button class="auth-link-button" [routerLink]="['/login']">
+        Sign in
+      </a>
     </mat-card-actions>
   </mat-card>
 </main>

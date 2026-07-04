@@ -1,12 +1,8 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 html {
   height: 100%;
+
   @include mat.theme(
     (
       color: (
@@ -17,23 +13,75 @@ html {
       density: 0,
     )
   );
+
+  /*
+    App palette tokens.
+    Use these in your own components instead of hard-coding hex values.
+  */
+  --app-color-deep-twilight: #03045e;
+  --app-color-french-blue: #023e8a;
+  --app-color-bright-teal-blue: #0077b6;
+  --app-color-blue-green: #0096c7;
+  --app-color-sky-aqua: #48cae4;
+  --app-color-frosted-blue: #90e0ef;
+
+  /*
+    Semantic tokens.
+    Components should usually use these, not the raw palette tokens.
+  */
+  --app-color-primary: var(--app-color-deep-twilight);
+  --app-color-primary-hover: var(--app-color-french-blue);
+  --app-color-primary-active: var(--app-color-bright-teal-blue);
+
+  --app-color-accent: var(--app-color-blue-green);
+  --app-color-accent-light: var(--app-color-sky-aqua);
+  --app-color-accent-muted: var(--app-color-frosted-blue);
+
+  --app-color-background: #f8fbfd;
+  --app-color-surface: #ffffff;
+  --app-color-surface-muted: #eefbff;
+
+  --app-color-text-primary: #0f172a;
+  --app-color-text-secondary: #475569;
+  --app-color-text-inverse: #ffffff;
+
+  --app-color-border: #d8f3fa;
+
+  --app-border-radius: 12px;
+  --app-content-max-width: 1200px;
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
   color-scheme: light;
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
+  background-color: var(--app-color-background);
+  color: var(--app-color-text-primary);
   font: var(--mat-sys-body-medium);
 
-  // Reset the user agent margin.
   margin: 0;
   height: 100%;
 }
-/* You can add global styles to this file, and also import other style files */
+
+/* Global app-level helpers */
+.app-page {
+  width: 100%;
+  max-width: var(--app-content-max-width);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-card {
+  background-color: var(--app-color-surface);
+  border: 1px solid var(--app-color-border);
+  border-radius: var(--app-border-radius);
+}
+
+a {
+  color: var(--app-color-bright-teal-blue);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--app-color-french-blue);
+    text-decoration: underline;
+  }
+}
