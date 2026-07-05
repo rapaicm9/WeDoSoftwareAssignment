@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using TrainingTracker.Database;
 
@@ -9,13 +9,16 @@ namespace TrainingTracker.Common.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ActiveUserMiddleware> _logger;
+        private readonly IProblemDetailsService _problemDetailsService;
 
         public ActiveUserMiddleware(
             RequestDelegate next,
-            ILogger<ActiveUserMiddleware> logger)
+            ILogger<ActiveUserMiddleware> logger,
+            IProblemDetailsService problemDetailsService)
         {
             _next = next;
             _logger = logger;
+            _problemDetailsService = problemDetailsService;
         }
 
         public async Task InvokeAsync(
@@ -109,7 +112,7 @@ namespace TrainingTracker.Common.Middleware
             }
         }
 
-        private static async Task WriteProblemDetailsAsync(
+        private async Task WriteProblemDetailsAsync(
             HttpContext context,
             int statusCode,
             string title,
@@ -121,24 +124,25 @@ namespace TrainingTracker.Common.Middleware
                 return;
             }
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = statusCode,
-                Title = title,
-                Detail = detail,
-                Instance = context.Request.Path
-            };
-
-            problemDetails.Extensions["errorCode"] = errorCode;
-            problemDetails.Extensions["traceId"] = context.TraceIdentifier;
-
             context.Response.Clear();
             context.Response.StatusCode = statusCode;
-            context.Response.ContentType = "application/problem+json";
 
-            await context.Response.WriteAsJsonAsync(
-                problemDetails,
-                cancellationToken: context.RequestAborted);
+            await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+            {
+                HttpContext = context,
+                ProblemDetails =
+                {
+                    Status = statusCode,
+                    Title = title,
+                    Detail = detail,
+                    Instance = context.Request.Path,
+                    Extensions =
+                    {
+                        ["errorCode"] = errorCode,
+                        ["traceId"] = Activity.Current?.Id ?? context.TraceIdentifier
+                    }
+                }
+            });
         }
     }
 }

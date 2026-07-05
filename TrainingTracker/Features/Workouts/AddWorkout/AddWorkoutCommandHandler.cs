@@ -41,7 +41,7 @@ namespace TrainingTracker.Features.Workouts.AddWorkout
                 CreatedAtUtc = DateTime.UtcNow
             };
 
-            await _dbContext.Workouts.AddAsync(workout, cancellationToken);
+            _dbContext.Workouts.Add(workout);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             var response = _mapper.Map<AddWorkoutResponse>(workout);

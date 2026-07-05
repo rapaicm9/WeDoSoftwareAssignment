@@ -49,41 +49,29 @@ namespace TrainingTracker.Common.Http
                 _ => "Request Failed"
             };
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = statusCode,
-                Title = title,
-                Detail = error.Message,
-                Instance = controller.HttpContext.Request.Path
-            };
+            var problemDetails = controller.ProblemDetailsFactory.CreateProblemDetails(
+                controller.HttpContext,
+                statusCode: statusCode,
+                title: title,
+                detail: error.Message,
+                instance: controller.HttpContext.Request.Path);
 
             problemDetails.Extensions["errorCode"] = error.Code;
-            problemDetails.Extensions["traceId"] = controller.HttpContext.TraceIdentifier;
 
-            return statusCode switch
-            {
-                StatusCodes.Status400BadRequest => controller.BadRequest(problemDetails),
-                StatusCodes.Status409Conflict => controller.Conflict(problemDetails),
-                StatusCodes.Status404NotFound => controller.NotFound(problemDetails),
-                StatusCodes.Status401Unauthorized => controller.Unauthorized(problemDetails),
-                StatusCodes.Status403Forbidden => controller.StatusCode(StatusCodes.Status403Forbidden, problemDetails),
-                _ => controller.StatusCode(statusCode, problemDetails)
-            };
+            return controller.StatusCode(statusCode, problemDetails);
         }
 
         private static ActionResult<TValue> CreateUnexpectedErrorResponse<TValue>(
             ControllerBase controller)
         {
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "Unexpected error",
-                Detail = "An unexpected error occurred.",
-                Instance = controller.HttpContext.Request.Path
-            };
+            var problemDetails = controller.ProblemDetailsFactory.CreateProblemDetails(
+                controller.HttpContext,
+                statusCode: StatusCodes.Status500InternalServerError,
+                title: "Unexpected error",
+                detail: "An unexpected error occurred.",
+                instance: controller.HttpContext.Request.Path);
 
             problemDetails.Extensions["errorCode"] = "Errors.Unexpected";
-            problemDetails.Extensions["traceId"] = controller.HttpContext.TraceIdentifier;
 
             return controller.StatusCode(
                 StatusCodes.Status500InternalServerError,

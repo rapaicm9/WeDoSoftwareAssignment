@@ -6,10 +6,14 @@ namespace TrainingTracker.Common.Exceptions
     public sealed class GlobalExceptionHandler : IExceptionHandler
     {
         private readonly ILogger<GlobalExceptionHandler> _logger;
+        private readonly IProblemDetailsService _problemDetailsService;
 
-        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+        public GlobalExceptionHandler(
+            ILogger<GlobalExceptionHandler> logger,
+            IProblemDetailsService problemDetailsService)
         {
             _logger = logger;
+            _problemDetailsService = problemDetailsService;
         }
 
         public async ValueTask<bool> TryHandleAsync(
@@ -22,25 +26,20 @@ namespace TrainingTracker.Common.Exceptions
                 "Unhandled exception occurred. TraceId: {TraceId}",
                 httpContext.TraceIdentifier);
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "Internal server error",
-                Detail = "An unexpected error occurred.",
-                Instance = httpContext.Request.Path
-            };
-
-            problemDetails.Extensions["errorCode"] = "Errors.UnhandledException";
-            problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
-
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            httpContext.Response.ContentType = "application/problem+json";
 
-            await httpContext.Response.WriteAsJsonAsync(
-                problemDetails,
-                cancellationToken);
-
-            return true;
+            return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+            {
+                HttpContext = httpContext,
+                Exception = exception,
+                ProblemDetails =
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "Internal server error",
+                    Detail = "An unexpected error occured",
+                    Extensions = { ["errorCode"] = "Errors.UnhandledException" }
+                }
+            });
         }
     }
 }
