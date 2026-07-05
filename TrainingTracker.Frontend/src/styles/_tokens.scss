@@ -1,36 +1,36 @@
 :root {
   /* Raw palette */
-  --color-deep-twilight: #03045e;
-  --color-french-blue: #023e8a;
-  --color-bright-teal-blue: #0077b6;
-  --color-blue-green: #0096c7;
-  --color-sky-aqua: #48cae4;
-  --color-frosted-blue: #90e0ef;
+  --app-color-deep-twilight: #03045e;
+  --app-color-french-blue: #023e8a;
+  --app-color-bright-teal-blue: #0077b6;
+  --app-color-blue-green: #0096c7;
+  --app-color-sky-aqua: #48cae4;
+  --app-color-frosted-blue: #90e0ef;
 
   /* Semantic app colors */
-  --color-primary: var(--color-deep-twilight);
-  --color-primary-hover: var(--color-french-blue);
-  --color-primary-active: var(--color-bright-teal-blue);
+  --app-color-primary: var(--app-color-deep-twilight);
+  --app-color-primary-hover: var(--app-color-french-blue);
+  --app-color-primary-active: var(--app-color-bright-teal-blue);
 
-  --color-accent: var(--color-blue-green);
-  --color-accent-light: var(--color-sky-aqua);
-  --color-accent-muted: var(--color-frosted-blue);
+  --app-color-accent: var(--app-color-blue-green);
+  --app-color-accent-light: var(--app-color-sky-aqua);
+  --app-color-accent-muted: var(--app-color-frosted-blue);
 
   /* Neutral/supporting colors */
-  --color-background: #f8fbfd;
-  --color-surface: #ffffff;
-  --color-surface-muted: #eefbff;
+  --app-color-background: #f8fbfd;
+  --app-color-surface: #ffffff;
+  --app-color-surface-muted: #eefbff;
 
-  --color-text-primary: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-inverse: #ffffff;
+  --app-color-text-primary: #0f172a;
+  --app-color-text-secondary: #475569;
+  --app-color-text-inverse: #ffffff;
 
-  --color-border: #d8f3fa;
+  --app-color-border: #d8f3fa;
 
   /* Keep non-blue semantic states separate */
-  --color-error: #dc2626;
-  --color-success: #16a34a;
-  --color-warning: #d97706;
+  --app-color-error: #dc2626;
+  --app-color-success: #16a34a;
+  --app-color-warning: #d97706;
 
   /* Layout */
   --app-border-radius: 12px;

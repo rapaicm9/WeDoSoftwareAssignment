@@ -1,4 +1,6 @@
 @use '@angular/material' as mat;
+@use './styles/tokens';
+@use './styles/base';
 
 html {
   height: 100%;

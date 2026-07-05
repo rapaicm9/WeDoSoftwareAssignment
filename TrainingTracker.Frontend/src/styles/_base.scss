@@ -1,25 +1,23 @@
-html,
-body {
-  height: 100%;
-}
-
 body {
   margin: 0;
-  font-family: Roboto, Arial, sans-serif;
-  background: var(--color-background);
-  color: var(--color-text-primary);
+  height: 100%;
+  color-scheme: light;
+  background-color: var(--app-color-background);
+  color: var(--app-color-text-primary);
+  font: var(--mat-sys-body-medium);
 }
 
 a {
-  color: var(--color-bright-teal-blue);
+  color: var(--app-color-bright-teal-blue);
   text-decoration: none;
 
   &:hover {
-    color: var(--color-french-blue);
+    color: var(--app-color-french-blue);
     text-decoration: underline;
   }
 }
 
+/* Global app-level helpers */
 .app-page {
   width: 100%;
   max-width: var(--app-content-max-width);
@@ -28,7 +26,12 @@ a {
 }
 
 .app-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background-color: var(--app-color-surface);
+  border: 1px solid var(--app-color-border);
   border-radius: var(--app-border-radius);
+}
+
+/* Angular Material overrides */
+.mat-mdc-dialog-surface {
+  background-color: rgb(231, 240, 244) !important;
 }
