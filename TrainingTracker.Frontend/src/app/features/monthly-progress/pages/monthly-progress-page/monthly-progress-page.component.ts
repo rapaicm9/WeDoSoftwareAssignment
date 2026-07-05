@@ -1,4 +1,4 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -38,7 +38,7 @@ import { MonthlyProgressApiService } from '../../data-access/monthly-progress-ap
   templateUrl: './monthly-progress-page.component.html',
   styleUrl: './monthly-progress-page.component.scss',
 })
-export class MonthlyProgressPageComponent {
+export class MonthlyProgressPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly formBuilder = inject(FormBuilder);
   private readonly monthlyProgressApiService = inject(MonthlyProgressApiService);

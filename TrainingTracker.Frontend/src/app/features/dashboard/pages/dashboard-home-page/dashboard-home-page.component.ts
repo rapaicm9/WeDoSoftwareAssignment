@@ -1,6 +1,7 @@
 import {
   Component,
   DestroyRef,
+  OnInit,
   computed,
   inject,
   signal,
@@ -38,7 +39,7 @@ interface DashboardFeatureCard {
   templateUrl: './dashboard-home-page.component.html',
   styleUrl: './dashboard-home-page.component.scss',
 })
-export class DashboardHomePageComponent {
+export class DashboardHomePageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly tokenStorageService = inject(TokenStorageService);
   private readonly workoutsApiService = inject(WorkoutsApiService);
