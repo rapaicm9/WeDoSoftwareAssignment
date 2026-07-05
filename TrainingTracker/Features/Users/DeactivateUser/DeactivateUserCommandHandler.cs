@@ -2,6 +2,7 @@
 using TrainingTracker.Database;
 using TrainingTracker.Common.CQRS;
 using TrainingTracker.Common.Results;
+using AutoMapper;
 
 namespace TrainingTracker.Features.Users.DeactivateUser
 {
@@ -9,13 +10,16 @@ namespace TrainingTracker.Features.Users.DeactivateUser
     {
         private readonly AppDbContext _dbContext;
         private readonly ILogger<DeactivateUserCommandHandler> _logger;
+        private readonly IMapper _mapper;
 
         public DeactivateUserCommandHandler(
             AppDbContext dbContext,
-            ILogger<DeactivateUserCommandHandler> logger)
+            ILogger<DeactivateUserCommandHandler> logger,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<Result<UserResponse>> Handle(
@@ -56,14 +60,7 @@ namespace TrainingTracker.Features.Users.DeactivateUser
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
-                var response = new UserResponse(
-                    user.Id,
-                    user.Email,
-                    user.FirstName,
-                    user.LastName,
-                    user.IsActive,
-                    user.CreatedAtUtc,
-                    user.UpdatedAtUtc);
+                var response = _mapper.Map<UserResponse>(user);
 
                 return Result<UserResponse>.Success(response);
             }

@@ -6,10 +6,7 @@ namespace TrainingTracker.Features.Auth.Login
     {
         public LoginMappingProfile() 
         {
-            CreateMap<LoginRequest, LoginCommand>()
-                .ConstructUsing(request => new LoginCommand(
-                    request.Email,
-                    request.Password));
+            CreateMap<LoginRequest, LoginCommand>();
         }
     }
 }

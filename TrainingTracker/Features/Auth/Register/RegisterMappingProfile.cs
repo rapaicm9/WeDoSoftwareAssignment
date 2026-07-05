@@ -7,20 +7,12 @@ namespace TrainingTracker.Features.Auth.Register
     {
         public RegisterMappingProfile()
         {
-            CreateMap<RegisterRequest, RegisterCommand>()
-                .ConstructUsing(request => new RegisterCommand(
-                    request.Email,
-                    request.Password,
-                    request.FirstName,
-                    request.LastName));
+            CreateMap<RegisterRequest, RegisterCommand>();
 
             CreateMap<User, RegisterResponse>()
-                .ConstructUsing(user => new RegisterResponse(
-                    user.Id,
-                    user.Email,
-                    user.FirstName,
-                    user.LastName,
-                    $"{user.FirstName} {user.LastName}".Trim()));
+                .ForCtorParam(
+                    nameof(RegisterResponse.FullName),
+                    options => options.MapFrom(user => $"{user.FirstName} {user.LastName}".Trim()));
         }
     }
 }

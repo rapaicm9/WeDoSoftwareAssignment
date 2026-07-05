@@ -2,6 +2,8 @@
 using TrainingTracker.Database;
 using TrainingTracker.Common.CQRS;
 using TrainingTracker.Common.Results;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace TrainingTracker.Features.Workouts.GetWorkouts
 {
@@ -10,13 +12,16 @@ namespace TrainingTracker.Features.Workouts.GetWorkouts
     {
         private readonly AppDbContext _dbContext;
         private readonly ILogger<GetWorkoutsQueryHandler> _logger;
+        private readonly IMapper _mapper;
 
         public GetWorkoutsQueryHandler(
             AppDbContext dbContext,
-            ILogger<GetWorkoutsQueryHandler> logger)
+            ILogger<GetWorkoutsQueryHandler> logger,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<Result<IReadOnlyCollection<WorkoutResponse>>> Handle(
@@ -56,19 +61,7 @@ namespace TrainingTracker.Features.Workouts.GetWorkouts
                 .Where(workout => workout.UserId == request.UserId)
                 .OrderByDescending(workout => workout.TrainingDateTimeUtc)
                 .ThenByDescending(workout => workout.CreatedAtUtc)
-                .Select(workout => new WorkoutResponse(
-                    workout.Id,
-                    workout.UserId,
-                    workout.Title,
-                    workout.Type,
-                    workout.DurationMinutes,
-                    workout.CaloriesBurned,
-                    workout.TrainingIntensity,
-                    workout.Fatigue,
-                    workout.Notes,
-                    workout.TrainingDateTimeUtc,
-                    workout.CreatedAtUtc,
-                    workout.UpdatedAtUtc))
+                .ProjectTo<WorkoutResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
             return Result<IReadOnlyCollection<WorkoutResponse>>.Success(workouts);

@@ -5,6 +5,7 @@ using TrainingTracker.Database;
 using TrainingTracker.Common.CQRS;
 using TrainingTracker.Common.Results;
 using TrainingTracker.Models.Entities;
+using AutoMapper;
 
 namespace TrainingTracker.Features.Users.UpdateUser
 {
@@ -13,15 +14,18 @@ namespace TrainingTracker.Features.Users.UpdateUser
         private readonly AppDbContext _dbContext;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly ILogger<UpdateUserCommandHandler> _logger;
+        private readonly IMapper _mapper;
 
         public UpdateUserCommandHandler(
             AppDbContext dbContext,
             IPasswordHasher<User> passwordHasher,
-            ILogger<UpdateUserCommandHandler> logger)
+            ILogger<UpdateUserCommandHandler> logger,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _passwordHasher = passwordHasher;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<Result<UserResponse>> Handle(
@@ -104,14 +108,7 @@ namespace TrainingTracker.Features.Users.UpdateUser
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
-                var response = new UserResponse(
-                    user.Id,
-                    user.Email,
-                    user.FirstName,
-                    user.LastName,
-                    user.IsActive,
-                    user.CreatedAtUtc,
-                    user.UpdatedAtUtc);
+                var response = _mapper.Map<UserResponse>(user);
 
                 return Result<UserResponse>.Success(response);
             }

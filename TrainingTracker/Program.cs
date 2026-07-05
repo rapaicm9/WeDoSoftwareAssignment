@@ -126,6 +126,10 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.Services.GetRequiredService<IMapper>()
+    .ConfigurationProvider
+    .AssertConfigurationIsValid();
+
 app.UseExceptionHandler();
 
 app.MapOpenApi();

@@ -2,6 +2,8 @@
 using TrainingTracker.Database;
 using TrainingTracker.Common.CQRS;
 using TrainingTracker.Common.Results;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace TrainingTracker.Features.Users.GetUserById
 {
@@ -10,11 +12,16 @@ namespace TrainingTracker.Features.Users.GetUserById
     {
         private readonly AppDbContext _dbContext;
         private readonly ILogger<GetUserByIdQueryHandler> _logger;
+        private readonly IMapper _mapper;
 
-        public GetUserByIdQueryHandler(AppDbContext dbContext, ILogger<GetUserByIdQueryHandler> logger)
+        public GetUserByIdQueryHandler(
+            AppDbContext dbContext, 
+            ILogger<GetUserByIdQueryHandler> logger,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<Result<UserResponse>> Handle(
@@ -26,14 +33,7 @@ namespace TrainingTracker.Features.Users.GetUserById
                 var user = await _dbContext.Users
                     .AsNoTracking()
                     .Where(user => user.Id == request.UserId)
-                    .Select(user => new UserResponse(
-                        user.Id,
-                        user.Email,
-                        user.FirstName,
-                        user.LastName,
-                        user.IsActive,
-                        user.CreatedAtUtc,
-                        user.UpdatedAtUtc))
+                    .ProjectTo<UserResponse>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (user is null)
